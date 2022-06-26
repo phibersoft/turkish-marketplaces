@@ -26,10 +26,10 @@ export class Ideasoft
       Omit<I_Integrations_Ideasoft_ApiRequest_Orders_Params, "page" | "limit">
     >
 {
-  private _api: AxiosInstance;
+  public api: AxiosInstance;
 
   constructor(apiKey: string, magazaUri: string) {
-    this._api = axios.create({
+    this.api = axios.create({
       baseURL: `${magazaUri}/api`,
       headers: {
         "Content-Type": "application/json",
@@ -50,7 +50,7 @@ export class Ideasoft
     };
 
     return IntegrationHelpers.wrapper<I_Integrations_Ideasoft_Product[]>(() =>
-      this._api.get(`/products?${IntegrationHelpers.objectToQuery(_params)}`)
+      this.api.get(`/products?${IntegrationHelpers.objectToQuery(_params)}`)
     );
   };
 
@@ -124,7 +124,7 @@ export class Ideasoft
     };
 
     return IntegrationHelpers.wrapper<I_Integrations_Ideasoft_Order[]>(() =>
-      this._api.get(`/orders?${IntegrationHelpers.objectToQuery(_params)}`)
+      this.api.get(`/orders?${IntegrationHelpers.objectToQuery(_params)}`)
     );
   };
 
@@ -194,9 +194,18 @@ export class Ideasoft
     productId: number
   ): Promise<I_Integrations_MainResponse<I_Integrations_Ideasoft_Product>> => {
     return IntegrationHelpers.wrapper<I_Integrations_Ideasoft_Product>(() =>
-      this._api.put(`/products/${productId}`, product)
+      this.api.put(`/products/${productId}`, product)
     );
   };
+
+  public editOrder = async (
+      order: Partial<I_Integrations_Ideasoft_Order>,
+      orderId: number
+  ): Promise<I_Integrations_MainResponse<I_Integrations_Ideasoft_Order>> => {
+    return IntegrationHelpers.wrapper<I_Integrations_Ideasoft_Order>(
+        () => this.api.put(`/orders/${orderId}`, order)
+    )
+  }
 
   public imageConverter = (image: I_Integrations_Ideasoft_Image): string => {
     const { directoryName, filename, extension, revision } = image;

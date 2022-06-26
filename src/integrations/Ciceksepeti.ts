@@ -30,10 +30,10 @@ export class Ciceksepeti
       >
     >
 {
-  private _api: AxiosInstance;
+  public api: AxiosInstance;
 
   constructor(apiKey: string) {
-    this._api = axios.create({
+    this.api = axios.create({
       baseURL: "https://apis.ciceksepeti.com",
       headers: {
         "Content-Type": "application/json",
@@ -55,7 +55,7 @@ export class Ciceksepeti
 
     return IntegrationHelpers.wrapper<I_Integrations_Ciceksepeti_ApiResponse_Products_Success>(
       () =>
-        this._api.get(
+        this.api.get(
           `/api/v1/Products?${IntegrationHelpers.objectToQuery(_params)}`
         )
     );
@@ -147,7 +147,7 @@ export class Ciceksepeti
 
 
     return IntegrationHelpers.wrapper<I_Integrations_Ciceksepeti_ApiResponse_Orders_Success>(
-      () => this._api.post(`/api/v1/Order/GetOrders`, _params)
+      () => this.api.post(`/api/v1/Order/GetOrders`, _params)
     );
   };
 

@@ -24,8 +24,8 @@ export class Trendyol
       Omit<I_Integrations_Trendyol_ApiRequest_Orders_Params, "page" | "size">
     >
 {
-  private _api: AxiosInstance;
-  private _apiWithSupplier: AxiosInstance;
+  public api: AxiosInstance;
+  public apiWithSupplier: AxiosInstance;
 
   constructor(apiKey: string, apiSecret: string, firmId: number) {
     const headers = {
@@ -33,12 +33,12 @@ export class Trendyol
       "User-Agent": `${firmId} - SelfIntegration`,
     };
 
-    this._api = axios.create({
+    this.api = axios.create({
       baseURL: "https://api.trendyol.com/sapigw",
       headers,
     });
 
-    this._apiWithSupplier = axios.create({
+    this.apiWithSupplier = axios.create({
       baseURL: `https://api.trendyol.com/sapigw/suppliers/${firmId}`,
       headers,
     });
@@ -63,7 +63,7 @@ export class Trendyol
     };
 
     return IntegrationHelpers.wrapper(() =>
-      this._apiWithSupplier.get(
+      this.apiWithSupplier.get(
         `/orders?${IntegrationHelpers.objectToQuery(_params)}`
       )
     );
@@ -84,7 +84,7 @@ export class Trendyol
 
     return IntegrationHelpers.wrapper<I_Integrations_Trendyol_ApiResponse_Products_Success>(
       () => {
-        return this._apiWithSupplier.get(
+        return this.apiWithSupplier.get(
           `products?${IntegrationHelpers.objectToQuery(defParams)}`
         );
       }
